@@ -22,7 +22,7 @@ export default function UploadFile() {
     formData.append('file', file);
 
     try {
-      const res = await fetch('http://127.0.0.1:5000/upload', {
+      const res = await fetch('https://karbon-intern-project.vercel.app/upload', {
         method: 'POST',
         body: formData,
       });
