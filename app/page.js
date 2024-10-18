@@ -5,9 +5,11 @@ export default function UploadFile() {
   const [file, setFile] = useState(null);
   const [response, setResponse] = useState(null);
   const [error, setError] = useState(null);
+  const [uploadMessage, setUploadMessage] = useState('');
 
   const handleFileChange = (e) => {
     setFile(e.target.files[0]);
+    setUploadMessage(''); // Reset the upload message when a new file is selected
   };
 
   const handleSubmit = async (e) => {
@@ -31,20 +33,23 @@ export default function UploadFile() {
         const data = await res.json();
         setResponse(data);
         setError(null);
+        setUploadMessage('File uploaded successfully!'); // Set success message
       } else {
         setError('Failed to upload file.');
         setResponse(null);
+        setUploadMessage(''); // Reset message on error
       }
     } catch (err) {
       setError('Error during file upload.');
       setResponse(null);
+      setUploadMessage(''); // Reset message on error
     }
   };
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-r from-blue-500 to-blue-300 p-4">
       <div className="bg-white shadow-lg rounded-lg p-10 max-w-md w-full transition-transform transform hover:scale-105">
-        <h2 className="text-4xl font-bold text-center text-gray-800 mb-6">Upload Your File</h2>
+        <h2 className="text-4xl font-bold text-center text-gray-800 mb-6">Upload Your Financial Data</h2>
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="flex items-center justify-center">
             <label className="flex flex-col items-center justify-center w-full h-48 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:border-blue-500 transition duration-200">
@@ -65,6 +70,12 @@ export default function UploadFile() {
           </button>
         </form>
 
+        {uploadMessage && (
+          <p className="mt-4 text-green-700 bg-green-100 border-l-4 border-green-500 p-4 rounded-md shadow">
+            {uploadMessage}
+          </p>
+        )}
+        
         {response && (
           <pre className="mt-4 text-sm text-green-700 bg-green-100 border-l-4 border-green-500 p-4 rounded-md shadow">
             {JSON.stringify(response, null, 2)}
